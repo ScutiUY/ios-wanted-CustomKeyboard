@@ -13,9 +13,7 @@ enum RepositoryError {
 
 class Repository {
     
-    private var currentPage = 0
-    
-    private let httpClient = HttpClient(baseUrl: "https://api.plkey.app/theme/review?themeId=6&start=0&count=20")
+    private let httpClient = HttpClient(baseUrl: "https://api.plkey.app/theme/review?themeId=PLKEY0-L-81&start=0&count=20")
     
     func reviewData(completion: @escaping (Result<ModelData, Error>) -> Void) {
         httpClient.getJson { result in
