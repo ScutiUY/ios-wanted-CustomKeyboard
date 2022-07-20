@@ -9,7 +9,8 @@ class ReviewListViewController: UIViewController {
 
     private var dataList = ModelData()
     private lazy var activityIndicator = UIActivityIndicatorView(style: .large)
-
+    private var headerText = ""
+    
     private var reviewTableView: UITableView = {
         let reviewTableView = UITableView()
         reviewTableView.sectionHeaderTopPadding = 0
@@ -102,6 +103,7 @@ extension ReviewListViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         guard let headerCell = tableView.dequeueReusableHeaderFooterView(withIdentifier: "headerCell") as? ReviewListHeaderView else { return UITableViewHeaderFooterView()}
         headerCell.delegate = self
+        headerCell.fetchReviewDataToTextField(reviewTextData: headerText)
         return headerCell
     }
 }
@@ -118,7 +120,15 @@ extension ReviewListViewController: UITableViewDelegate {
 extension ReviewListViewController: PresentButtonSelectable {
     func presentButtonStatus() {
         let createReviewVC = CreateReviewViewController()
+        createReviewVC.delegate = self
         createReviewVC.modalPresentationStyle = .fullScreen
-        self.present(createReviewVC, animated: true)
+        self.navigationController?.pushViewController(createReviewVC, animated: true)
+    }
+}
+
+extension ReviewListViewController: ReviewTextReceivable {
+    func  hangulKeyboardText(text: String) {
+        headerText = text
+        reviewTableView.reloadData()
     }
 }
