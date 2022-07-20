@@ -8,6 +8,7 @@ import UIKit
 class ReviewListViewController: UIViewController {
 
     private var dataList = ModelData()
+    private lazy var activityIndicator = UIActivityIndicatorView(style: .large)
     private var headerText = ""
     
     private var reviewTableView: UITableView = {
@@ -24,10 +25,11 @@ class ReviewListViewController: UIViewController {
         super.viewDidLoad()
         
         setLayout()
+        setIndicatorUI()
         setNavigationLayout()
         reviewTableView.delegate = self
         reviewTableView.dataSource = self
-        
+        activityIndicator.startAnimating()
         getData()
     }
     
@@ -55,6 +57,14 @@ class ReviewListViewController: UIViewController {
         ])
         
     }
+    
+    func setIndicatorUI() {
+        view.addSubview(activityIndicator)
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
+    }
+    
     private func getData() {
         API.shared.get { [self] result in
             switch result {
@@ -62,6 +72,7 @@ class ReviewListViewController: UIViewController {
                 dataList = data
                 DispatchQueue.main.async {
                     self.reviewTableView.reloadData()
+                    self.activityIndicator.stopAnimating()
                 }
             case .failure(let error as NetworkError):
                 switch error {
