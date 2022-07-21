@@ -9,18 +9,22 @@ import UIKit
 
 class KeyboardViewController: UIInputViewController {
     
-    private let keyboardManager = HangulKeyboardManager()
-
     @IBOutlet var nextKeyboardButton: UIButton!
+    private let keyboardManager = HangulKeyboardManager()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        guard let customKeyboardView = Bundle.main.loadNibNamed("CustomKeyboard", owner: nil)?.first as? CustomKeyboardView else { return }
+        guard let customKeyboardView = Bundle.main.loadNibNamed(
+            "CustomKeyboard",
+            owner: nil
+            )?.first as?
+            CustomKeyboardView else {
+            return
+            }
         customKeyboardView.delegate = self
         keyboardManager.delegate = self
 
         guard let inputView = inputView else { return }
-
         inputView.addSubview(customKeyboardView)
         customKeyboardView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -30,23 +34,16 @@ class KeyboardViewController: UIInputViewController {
             customKeyboardView.rightAnchor.constraint(equalTo: inputView.rightAnchor),
             customKeyboardView.bottomAnchor.constraint(equalTo: inputView.bottomAnchor)
         ])
-        
-    }
-    
-    override func updateViewConstraints() {
-        super.updateViewConstraints()
-    }
-    
-    override func viewWillLayoutSubviews() {
-        super.viewWillLayoutSubviews()
     }
 }
 
 extension KeyboardViewController: KeyboardInfoReceivable, HangulKeyboardDataReceivable {
+
     func customKeyboardView(pressedKeyboardButton: UIButton) {
         guard let textData = pressedKeyboardButton.titleLabel?.text else { return }
         keyboardManager.enterText(text: textData)
     }
+    
     func hangulKeyboard(enterPressed: HangulKeyboardData) {
         self.dismissKeyboard()
     }
