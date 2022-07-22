@@ -28,6 +28,7 @@ class ReviewListHeaderView: UITableViewHeaderFooterView {
         reviewTextField.layer.cornerRadius = 20
         reviewTextField.placeholder = " 이 테마가 마음에 드시나요?"
         reviewTextField.font = UIFont.systemFont(ofSize: 16)
+        reviewTextField.textColor = .systemGray2
         reviewTextField.isEnabled = false
         return reviewTextField
     }()
@@ -59,7 +60,6 @@ class ReviewListHeaderView: UITableViewHeaderFooterView {
         reviewTextField.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            
             profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor),
@@ -84,5 +84,4 @@ class ReviewListHeaderView: UITableViewHeaderFooterView {
     func fetchReviewDataToTextField(reviewTextData text: String) {
         reviewTextField.text = text
     }
-    
- }
+}
