@@ -49,8 +49,8 @@ extension KeyboardViewController: KeyboardInfoReceivable, HangulKeyboardDataRece
     }
     
     func hangulKeyboard(updatedResult text: String) {
-        while self.textDocumentProxy.hasText {
-            self.textDocumentProxy.deleteBackward()
+        while textDocumentProxy.hasText {
+            textDocumentProxy.deleteBackward()
         }
         self.textDocumentProxy.insertText(text)
     }
