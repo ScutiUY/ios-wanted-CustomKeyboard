@@ -2,20 +2,17 @@
 //  CustomKeyboardView.swift
 //  CustomKeyboard
 //
-//  Created by 효우 on 2022/07/12.
 //
 
 import UIKit
 
-protocol KeyboardInfoReceivable {
+protocol KeyboardInfoReceivable: AnyObject {
     func customKeyboardView(pressedKeyboardButton: UIButton)
-    func customKeyboardView(pressedDeleteButton: UIButton)
 }
 
 class CustomKeyboardView: UIView {
 
-    var delegate: KeyboardInfoReceivable?
-
+    weak var delegate: KeyboardInfoReceivable?
     private var isShiftPressed = false
     
     @IBOutlet weak var qButton: UIButton!
@@ -53,6 +50,14 @@ class CustomKeyboardView: UIView {
     @IBOutlet weak var spaceButton: UIButton!
     @IBOutlet weak var returnButton: UIButton!
     
+    @IBOutlet weak var topStackView: UIStackView!
+    @IBOutlet weak var middleStackView: UIStackView!
+    @IBOutlet weak var bottomStackView: UIStackView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        setCornerRadius()
+    }
     
     @IBAction func keyboardPressed(_ sender: UIButton) {
         guard let delegate = delegate else { return }
@@ -64,14 +69,23 @@ class CustomKeyboardView: UIView {
         delegate.customKeyboardView(pressedKeyboardButton: sender)
     }
     
-    
     @IBAction func pressShiftButton(_ sender: UIButton) {
         isShiftPressed.toggle()
         changeDoubleChar()
     }
     
+    private func setCornerRadius() {
+        topStackView.subviews.forEach { $0.layer.cornerRadius = $0.frame.height * 0.1 }
+        middleStackView.subviews.forEach { $0.layer.cornerRadius = $0.frame.height * 0.1 }
+        bottomStackView.subviews.forEach { $0.layer.cornerRadius = $0.frame.height * 0.1 }
+        shiftButton.layer.cornerRadius = shiftButton.frame.height * 0.1
+        deleteButton.layer.cornerRadius = deleteButton.frame.height * 0.1
+        switchButton.layer.cornerRadius = switchButton.frame.height * 0.1
+        spaceButton.layer.cornerRadius = spaceButton.frame.height * 0.1
+        returnButton.layer.cornerRadius = returnButton.frame.height * 0.1
+    }
+    
     private func changeDoubleChar() {
-        
         if isShiftPressed {
             qButton.setTitle("ㅃ", for: .normal)
             wButton.setTitle("ㅉ", for: .normal)
@@ -81,7 +95,7 @@ class CustomKeyboardView: UIView {
             oButton.setTitle("ㅒ", for: .normal)
             pButton.setTitle("ㅖ", for: .normal)
             shiftButton.isSelected = isShiftPressed
-            shiftButton.setImage(UIImage(systemName: "shift.fill"), for: .normal)
+            shiftButton.setImage(Icon.shiftFill.image, for: .normal)
         } else {
             qButton.setTitle("ㅂ", for: .normal)
             wButton.setTitle("ㅈ", for: .normal)
@@ -91,14 +105,8 @@ class CustomKeyboardView: UIView {
             oButton.setTitle("ㅐ", for: .normal)
             pButton.setTitle("ㅔ", for: .normal)
             shiftButton.isSelected = isShiftPressed
-            shiftButton.setImage(UIImage(systemName: "shift"), for: .normal)
+            shiftButton.setImage(Icon.shift.image, for: .normal)
         }
         self.layoutIfNeeded()
     }
-    
-    @IBAction func pressDeleteButton(_ sender: UIButton) {
-        guard let delegate = delegate else { return }
-        delegate.customKeyboardView(pressedDeleteButton: sender)
-    }
-    
 }

@@ -11,7 +11,8 @@ class ReviewTableViewCell: UITableViewCell {
     
     private let profileImageView: UIImageView = {
         let profileImageVIew = UIImageView()
-        profileImageVIew.image = UIImage(systemName: "person.fill")
+        profileImageVIew.image = Icon.personFill.image
+        profileImageVIew.tintColor = .systemGray4
         return profileImageVIew
     }()
     
@@ -56,13 +57,16 @@ class ReviewTableViewCell: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func prepareForReuse() {
+        profileImageView.image = Icon.personFill.image
+    }
+    
     private func setLayout() {
         contentView.addSubview(profileImageView)
         contentView.addSubview(labelStackView)
         labelStackView.addArrangedSubview(nickNameLabel)
         labelStackView.addArrangedSubview(rateLabel)
         labelStackView.addArrangedSubview(timeLabel)
-        
         
         profileImageView.translatesAutoresizingMaskIntoConstraints = false
         nickNameLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -71,7 +75,6 @@ class ReviewTableViewCell: UITableViewCell {
         labelStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            
             profileImageView.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 5),
             profileImageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
             profileImageView.widthAnchor.constraint(equalTo: profileImageView.heightAnchor),
@@ -85,29 +88,17 @@ class ReviewTableViewCell: UITableViewCell {
     }
     
     func fetchDataFromTableView(data: ReviewData) {
-        // imageView 통신
-
-        do {
-            if let url = URL(string: data.user.profileImage) {
-                let imgData = try Data(contentsOf: url)
-                DispatchQueue.main.async {
-                    self.profileImageView.image = UIImage(data: imgData)
-                }
+        ImageLoder().leadImage(url: data.user.profileImage) { result in
+            switch result {
+            case .success(let profileImage):
+                self.profileImageView.image = profileImage
+            case .failure(let error):
+                print(error.localizedDescription)
             }
-        } catch {
-            
         }
-        
+        timeLabel.text = data.createdAt
         nickNameLabel.text = data.user.userName
         rateLabel.text = data.content
-        
-        guard let reviewDate = data.createdAt.stringToDate else { return }
-        if reviewDate > Date(timeIntervalSinceNow: -86400) {
-            timeLabel.text = reviewDate.dateToRelativeTimeString
-        } else {
-            timeLabel.text = reviewDate.dateToOverTimeString
-        }
     }
-    
 }
 
