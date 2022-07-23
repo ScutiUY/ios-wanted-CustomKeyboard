@@ -8,11 +8,21 @@ import UIKit
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+<<<<<<< HEAD
+=======
+
+
+>>>>>>> f7c3e703b3da7ef855446a4a4d0f091bdfb7c7a9
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         return true
     }
 
+<<<<<<< HEAD
+=======
+    // MARK: UISceneSession Lifecycle
+
+>>>>>>> f7c3e703b3da7ef855446a4a4d0f091bdfb7c7a9
     func application(_ application: UIApplication, configurationForConnecting connectingSceneSession: UISceneSession, options: UIScene.ConnectionOptions) -> UISceneConfiguration {
         // Called when a new scene session is being created.
         // Use this method to select a configuration to create the new scene with.
@@ -24,9 +34,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // If any sessions were discarded while the application was not running, this will be called shortly after application:didFinishLaunchingWithOptions.
         // Use this method to release any resources that were specific to the discarded scenes, as they will not return.
     }
+<<<<<<< HEAD
     
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
         return UIInterfaceOrientationMask.portrait
     }
+=======
+
+
+>>>>>>> f7c3e703b3da7ef855446a4a4d0f091bdfb7c7a9
 }
 

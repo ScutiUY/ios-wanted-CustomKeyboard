@@ -1,4 +1,5 @@
 
+<<<<<<< HEAD
 # 👨‍👩‍👦‍👦 팀원 소개
 
 | <center>UY</center>   | <center>우지</center> |
@@ -308,3 +309,9 @@ let date = try values.decode(String.self, forKey: .createdAt)
 createdAt = ReviewDateConverter().convertReviewDate(rawData: date)
 ```
 
+=======
+# README 작성시 필수 요소
+- 팀원 소개 (이미지, 닉네임, 담당한 기술 등)
+- 프로젝트 소개
+- 기타 내용은 팀 내부에서 자율적으로 작성하시면 됩니다.
+>>>>>>> f7c3e703b3da7ef855446a4a4d0f091bdfb7c7a9
