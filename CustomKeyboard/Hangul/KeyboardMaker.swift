@@ -77,7 +77,11 @@ class KeyboardMaker {
         
         
         if isJong {
-            
+            let decomposedHangul = combinator.decomposeHangul(hangul: releaseTextField.last! , lastState: .jong).filter{$0.hangul != " "}
+            let newBuffer = [decomposedHangul[0], decomposedHangul[1], HangulKeyboardData(char: "", state: .empty)]
+            let newKeyboardData = combinator.combineHangul(buffer: newBuffer, lastState: .jung)
+            isJong = false
+            releaseTextField[releaseTextField.count - 1] = newKeyboardData.hangul
         } else if isDoubleJong {
             let lastDoubleJong = processingBuffer.alphaRepository[processingBuffer.alphaRepository.count - 2]
          
@@ -527,21 +531,19 @@ class KeyboardMaker {
             
             return currentStatus
             
-        } else if combineBuffer[0].hangul != "" {
+        } else if HangulSet.jongs.contains(currentKeyboardData.hangul) {
             
-            if HangulSet.jongs.contains(currentKeyboardData.hangul) {
-                
-                currentStatus.isCompleted = false
-                currentStatus.currentState = .jong
-                combineBuffer[2] = currentKeyboardData
-
-                if HangulSet.doubleJongs.contains(currentKeyboardData.hangul) {
-                    currentStatus.currentState = .doubleJong
-                    return currentStatus
-                }
-                
+            currentStatus.isCompleted = false
+            currentStatus.currentState = .jong
+            combineBuffer[2] = currentKeyboardData
+            
+            if HangulSet.doubleJongs.contains(currentKeyboardData.hangul) {
+                currentStatus.currentState = .doubleJong
                 return currentStatus
             }
+            
+            return currentStatus
+            
         } else if HangulSet.chos.contains(currentKeyboardData.hangul) {
             if HangulSet.doubleChos.contains(currentKeyboardData.hangul) {
                 
